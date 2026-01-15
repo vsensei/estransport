@@ -1,7 +1,11 @@
 # estransport
 [PRE_ALPHA] [Client] Open-source search and routing for public transport in Estonia.
 
-This project uses extrenal data sources:
+## Licensing
+
+The source code of the platform is dual-licensed under the EUPL v1.2 and AGPLv3 licenses.
+
+This project uses external data sources:
 
 - Routing data is provided by open source Digitransit platform (https://digitransit.fi/en/), that has been developed by HSL, Traficom and Waltti Solutions Oy.
 - The map data, streets, buildings etc. are provided by © OpenStreetMap contributors (https://www.openstreetmap.org/copyright).
