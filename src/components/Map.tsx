@@ -1,6 +1,6 @@
 import { MapContainer, TileLayer } from 'react-leaflet';
 import { digitransitAPIKey } from '../const/envVariables';
-import MapContents from './MapContents';
+import MapContentsRenderer from './MapContentsRenderer';
 
 import 'leaflet/dist/leaflet.css';
 
@@ -23,7 +23,7 @@ export default function Map() {
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url={`https://cdn.digitransit.fi/map/v3/hsl-map-en/{z}/{x}/{y}.png?digitransit-subscription-key=${digitransitAPIKey}`}
       />
-      <MapContents />
+      <MapContentsRenderer />
     </MapContainer>
   );
 }

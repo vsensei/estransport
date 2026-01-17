@@ -1,6 +1,5 @@
-import { decode } from '@googlemaps/polyline-codec';
 import { useEffect, useState } from 'react';
-import { Marker, Polyline, Popup } from 'react-leaflet';
+import { Marker, Popup } from 'react-leaflet';
 import { MapDataActionTypes } from '../../actions';
 import { useMapBoundsContext } from '../../context/MapBoundsContext';
 import { useMapDataContext } from '../../context/MapDataContext';
@@ -11,49 +10,18 @@ import {
   isStationType,
   isStopType,
 } from '../../utils';
-import { fetchItineraries, fetchStopDepartures } from '../../utils/fetch';
+import { fetchStopDepartures } from '../../utils/fetch';
 
 import type { LatLngTuple } from 'leaflet';
-import type {
-  ItineraryResponseData,
-  Location,
-  StopTime,
-} from '../../types/data';
+import type { Location, StopTime } from '../../types/data';
 
-export default function TestPoints() {
+export default function LocationsRenderer() {
   const [stopTimes, setStopTimes] = useState<StopTime[]>([]);
   const {
-    state: {
-      locations,
-      itineraryCoordinates,
-      itineraries,
-      selectedItinerary,
-      selectedLocation,
-    },
+    state: { locations, selectedLocation },
     dispatch,
   } = useMapDataContext();
   const { setMapView } = useMapBoundsContext();
-
-  useEffect(() => {
-    const getItineraries = async () => {
-      const itineraryData: ItineraryResponseData = await fetchItineraries(
-        //TODO: add typeguards
-        itineraryCoordinates as {
-          from: LatLngTuple;
-          to: LatLngTuple;
-        },
-      );
-      console.log(itineraryData);
-      dispatch({
-        type: MapDataActionTypes.SET_ITINERARIES,
-        payload: itineraryData?.data.planConnection.edges,
-      });
-    };
-
-    if (itineraryCoordinates.from && itineraryCoordinates.to) {
-      getItineraries();
-    }
-  }, [itineraryCoordinates, dispatch]);
 
   useEffect(() => {
     if (selectedLocation) {
@@ -165,32 +133,6 @@ export default function TestPoints() {
           </Marker>
         );
       })}
-      {!selectedItinerary &&
-        itineraries.map((itinerary) => {
-          console.log('ITINERARY', itinerary);
-
-          return itinerary?.node.legs.map((leg) => (
-            <Polyline
-              key={`${itinerary.node.start}${leg.legGeometry.points}`}
-              color={getColorByTransitType(leg.mode)}
-              dashArray={leg.mode === 'WALK' ? '10 15' : undefined}
-              weight={5}
-              positions={decode(leg.legGeometry.points)}
-            />
-          ));
-        })}
-      {selectedItinerary &&
-        console.log(selectedItinerary.node.start, selectedItinerary.node.end)}
-      {selectedItinerary &&
-        selectedItinerary.node.legs.map((leg) => (
-          <Polyline
-            key={`${selectedItinerary.node.start}${leg.legGeometry.points}`}
-            color={getColorByTransitType(leg.mode)}
-            dashArray={leg.mode === 'WALK' ? '10 15' : undefined}
-            weight={5}
-            positions={decode(leg.legGeometry.points)}
-          />
-        ))}
     </>
   );
 }
