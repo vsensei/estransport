@@ -1,7 +1,8 @@
 import { decode } from '@googlemaps/polyline-codec';
 import { useEffect, useState } from 'react';
-import { Marker, Polyline, Popup, useMap } from 'react-leaflet';
+import { Marker, Polyline, Popup } from 'react-leaflet';
 import { MapDataActionTypes } from '../../actions';
+import { useMapBoundsContext } from '../../context/MapBoundsContext';
 import { useMapDataContext } from '../../context/MapDataContext';
 import {
   getColor,
@@ -31,12 +32,7 @@ export default function TestPoints() {
     },
     dispatch,
   } = useMapDataContext();
-  const map = useMap();
-
-  map.on('dragend', function () {
-    const bounds = map.getBounds();
-    console.log(bounds);
-  });
+  const { setMapView } = useMapBoundsContext();
 
   useEffect(() => {
     const getItineraries = async () => {
@@ -45,7 +41,7 @@ export default function TestPoints() {
         itineraryCoordinates as {
           from: LatLngTuple;
           to: LatLngTuple;
-        }
+        },
       );
       console.log(itineraryData);
       dispatch({
@@ -62,9 +58,9 @@ export default function TestPoints() {
   useEffect(() => {
     if (selectedLocation) {
       const [lon, lat] = selectedLocation.geometry.coordinates;
-      map.setView([lat, lon], 18);
+      setMapView([lat, lon]);
     }
-  }, [selectedLocation, map]);
+  }, [selectedLocation, setMapView]);
 
   if (!locations) {
     return null;
@@ -157,7 +153,7 @@ export default function TestPoints() {
                           in{' '}
                           {getDepartureTime(
                             time.serviceDay,
-                            time.scheduledDeparture
+                            time.scheduledDeparture,
                           )}{' '}
                           minutes
                         </li>
@@ -175,7 +171,7 @@ export default function TestPoints() {
 
           return itinerary?.node.legs.map((leg) => (
             <Polyline
-              key={leg.legGeometry.points}
+              key={`${itinerary.node.start}${leg.legGeometry.points}`}
               color={getColorByTransitType(leg.mode)}
               dashArray={leg.mode === 'WALK' ? '10 15' : undefined}
               weight={5}
@@ -184,9 +180,11 @@ export default function TestPoints() {
           ));
         })}
       {selectedItinerary &&
+        console.log(selectedItinerary.node.start, selectedItinerary.node.end)}
+      {selectedItinerary &&
         selectedItinerary.node.legs.map((leg) => (
           <Polyline
-            key={leg.legGeometry.points}
+            key={`${selectedItinerary.node.start}${leg.legGeometry.points}`}
             color={getColorByTransitType(leg.mode)}
             dashArray={leg.mode === 'WALK' ? '10 15' : undefined}
             weight={5}
