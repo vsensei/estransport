@@ -3,41 +3,35 @@ import { serverBaseUrl } from '../const/envVariables';
 import type { LatLngTuple } from 'leaflet';
 import type {
   ItineraryResponseData,
+  LiveVehicleInfo,
   Location,
   StopInfoResponse,
   StopStationData,
 } from '../types/data';
 
-const fetchDataUnsafe = async (query: string) => {
-  const response = await fetch(`${serverBaseUrl}/${query}`);
-  const parsedResponse = await response.json();
+const fetchDataUnsafe = async (
+  endpoint: string,
+  searchParams?: URLSearchParams,
+) => {
+  const url = new URL(`${serverBaseUrl}/staticData/${endpoint}`);
 
-  return parsedResponse;
-};
+  if (searchParams) {
+    url.search = searchParams.toString();
+  }
 
-const fetchDataWithBodyUnsafe = async (query: string, body: string) => {
-  const response = await fetch(`${serverBaseUrl}/${query}`, {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body,
-  });
-  const parsedResponse = await response.json();
-
-  return parsedResponse;
+  const response = await fetch(url);
+  return response.json();
 };
 
 export const fetchLocationsByQueryName = (
-  locationQuery: string
+  locationQuery: string,
 ): Promise<Location[]> => {
-  return fetchDataUnsafe(`digitransit/autocomplete/${locationQuery}`);
+  return fetchDataUnsafe(`autocomplete/${locationQuery}`);
 };
 
 export const fetchStopDepartures = async (stopId: string) => {
   const itineraryData: { data: { stop: StopInfoResponse } } =
-    await fetchDataUnsafe(`digitransit/stopInfo/${stopId}`);
+    await fetchDataUnsafe(`stopInfo/${stopId}`);
   return itineraryData.data.stop.stoptimesWithoutPatterns;
 };
 
@@ -53,16 +47,43 @@ export const fetchPartialStops = ({
   maxLon: number;
 }): Promise<StopStationData[]> => {
   return fetchDataUnsafe(
-    `digitransit/stops/${minLat}/${minLon}/${maxLat}/${maxLon}`
+    'stops',
+    new URLSearchParams({
+      minLat: minLat.toString(),
+      minLon: minLon.toString(),
+      maxLat: maxLat.toString(),
+      maxLon: maxLon.toString(),
+    }),
   );
 };
 
-export const fetchItineraries = async (itineraryCoordinates: {
+export const fetchItineraries = async ({
+  from,
+  to,
+}: {
   from: LatLngTuple;
   to: LatLngTuple;
 }): Promise<ItineraryResponseData> => {
-  return fetchDataWithBodyUnsafe(
-    'digitransit/itinerary',
-    JSON.stringify(itineraryCoordinates)
+  const [startLat, startLon] = from;
+  const [finishLat, finishLon] = to;
+
+  return fetchDataUnsafe(
+    'itinerary',
+    new URLSearchParams({
+      startLat: startLat.toString(),
+      startLon: startLon.toString(),
+      finishLat: finishLat.toString(),
+      finishLon: finishLon.toString(),
+    }),
   );
+};
+
+export const processTransportLocationsTest = (
+  transportLocationsDataJSON: string,
+) => {
+  const data = JSON.parse(transportLocationsDataJSON) as LiveVehicleInfo[];
+
+  console.log('DATA', data);
+
+  return data;
 };

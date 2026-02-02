@@ -1,4 +1,5 @@
 import type { LatLngTuple } from 'leaflet';
+import type { TransportType } from '.';
 
 type Feature = {
   type: string;
@@ -246,3 +247,20 @@ export type GeocodingResponse = {
   features: GeocodingFeature[];
   bbox: number[];
 };
+
+export type LiveVehicleInfo = {
+  lat: number;
+  lon: number;
+  headingDegrees: number;
+  endStopName: string;
+};
+
+export interface LiveVehicleInfo {
+  type: TransportType;
+  lineNumber: string;
+  lat: number;
+  lon: number;
+  headingDegrees: number;
+  endStopName: string;
+  speed: string | null;
+}
