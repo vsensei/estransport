@@ -3,6 +3,7 @@ import { digitransitAPIKey } from '../const/envVariables';
 import MapContentsRenderer from './MapContentsRenderer';
 
 import 'leaflet/dist/leaflet.css';
+import styles from './Map.module.css';
 
 export default function Map() {
   return (
@@ -18,6 +19,8 @@ export default function Map() {
       maxZoom={18}
       minZoom={7.5}
       zoomDelta={0.5}
+      closePopupOnClick={true}
+      className={styles.map}
     >
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
