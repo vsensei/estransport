@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { MapDataActionTypes } from '../../actions';
 import { useMapDataContext } from '../../context/MapDataContext';
+import { formatDepartureTime, getDepartureTimeByDateTime } from '../../utils';
 import { fetchLocationsByQueryName } from '../../utils/fetch';
 
 import styles from './Header.module.css';
@@ -10,14 +11,14 @@ import type { Itinerary, Location } from '../../types/data';
 
 const sortLocations = (unsortedLocations: Location[]) => {
   return [...unsortedLocations].sort(
-    (a, b) => b.properties.confidence - a.properties.confidence
+    (a, b) => b.properties.confidence - a.properties.confidence,
   );
 };
 
 const calculateItineraryDistance = (itinerary: Itinerary) => {
   const distanceSum = itinerary.node.legs.reduce(
     (acc, leg) => (acc = acc + leg.distance),
-    0
+    0,
   );
 
   if (distanceSum < 1000) {
@@ -35,7 +36,7 @@ export default function Header() {
   const { state, dispatch } = useMapDataContext();
 
   const handleLocationSearchQueryChange = (
-    e: ChangeEvent<HTMLInputElement>
+    e: ChangeEvent<HTMLInputElement>,
   ) => {
     setLocationSearchQuery(e.target.value);
   };
@@ -108,16 +109,20 @@ export default function Header() {
         <ul className={styles.choosableList}>
           {state.itineraries.map((itinerary) => (
             <li
-              key={itinerary.node.legs.toString()}
+              key={`${itinerary.node.start}${itinerary.node.legs.toString()}`}
               aria-selected={false}
               onClick={() => handleSelectItineraryClick(itinerary)}
               style={{ backgroundColor: '' }}
             >
               {itinerary.node.legs.map((leg) => leg.mode).join('-')}
               <br />
+              {formatDepartureTime(
+                getDepartureTimeByDateTime(new Date(itinerary.node.start)),
+              )}
+              <br />
               {itinerary.node.legs.reduce(
                 (acc, leg) => (acc = acc + leg.duration),
-                0
+                0,
               )}
               <br />
               {calculateItineraryDistance(itinerary)}

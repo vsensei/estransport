@@ -1,7 +1,9 @@
 import { divIcon, LatLngBounds } from 'leaflet';
 import { useEffect, useState } from 'react';
-import { CircleMarker, Marker, useMap } from 'react-leaflet';
+import { CircleMarker, Marker } from 'react-leaflet';
 import { MapDataActionTypes } from '../../actions';
+import { MarkerShowState } from '../../const/enum';
+import { useMapBoundsContext } from '../../context/MapBoundsContext';
 import { useMapDataContext } from '../../context/MapDataContext';
 import { getColorByTransitType } from '../../utils';
 import { fetchPartialStops } from '../../utils/fetch';
@@ -10,12 +12,6 @@ import StopPopup from '../common/StopPopup';
 import type { StopStationData } from '../../types/data';
 
 type StopsMap = Record<StopStationData['gtfsId'], StopStationData>;
-
-const enum MarkerShowState {
-  HIDDEN,
-  DOT,
-  FULL,
-}
 
 const StopIcon = ({
   fillColor = '#000000',
@@ -36,7 +32,7 @@ const StopIcon = ({
 
 const isInLatLngBoundsArray = (
   newBounds: LatLngBounds,
-  latLngBounds: LatLngBounds[]
+  latLngBounds: LatLngBounds[],
 ) =>
   latLngBounds.some((latLngItem) => {
     console.log('latlng-', latLngItem, newBounds);
@@ -46,22 +42,17 @@ const isInLatLngBoundsArray = (
 
 export default function StopsRenderer() {
   const [stopsMap, setStopsMap] = useState<StopsMap>({});
-  const [filteredStops, setFilteredStops] = useState<StopStationData[]>([]);
-  const [markerShowState, setMarkerShowState] = useState(
-    MarkerShowState.HIDDEN
-  );
   const [latLngBounds, setLatLngBounds] = useState<LatLngBounds[]>([]);
-  const map = useMap();
+  const { mapBounds, mapZoom, markerShowState } = useMapBoundsContext();
   const { dispatch } = useMapDataContext();
+
   const isHidden = markerShowState === MarkerShowState.HIDDEN;
   const isFull = markerShowState === MarkerShowState.FULL;
 
   useEffect(() => {
     const updateStops = async () => {
-      const mapBounds = map.getBounds();
-
       if (
-        map.getZoom() < 13 ||
+        mapZoom < 13 ||
         (latLngBounds.length && isInLatLngBoundsArray(mapBounds, latLngBounds))
       ) {
         console.log('latlng NOT PROCEEDED');
@@ -84,81 +75,17 @@ export default function StopsRenderer() {
             stopStation.vehicleMode && !prevStopsMap[stopStation.gtfsId]
               ? { ...acc, [stopStation.gtfsId]: stopStation }
               : { ...acc },
-          prevStopsMap
-        )
+          prevStopsMap,
+        ),
       );
 
       setLatLngBounds((prevLatLngBounds) => [...prevLatLngBounds, mapBounds]);
     };
 
-    async function updateView() {
-      if (!isHidden) {
-        updateStops();
-      }
-
-      const mapZoom = map.getZoom();
-      console.log('MAPZOOM', mapZoom);
-
-      if (mapZoom > 16) {
-        return setMarkerShowState(MarkerShowState.FULL);
-      }
-
-      return mapZoom > 12 //should be 14
-        ? setMarkerShowState(MarkerShowState.DOT)
-        : setMarkerShowState(MarkerShowState.HIDDEN);
+    if (!isHidden) {
+      updateStops();
     }
-
-    if (!map) {
-      throw new Error(
-        'StopsRenderer should be only called within Map component.'
-      );
-    }
-    updateView();
-
-    map.on('dragend', function () {
-      updateView();
-    });
-
-    map.on('zoomend', function () {
-      updateView();
-    });
-
-    return () => {
-      map.off('dragend');
-      map.off('zoomend');
-    };
-  }, [map, isHidden, latLngBounds]);
-
-  useEffect(() => {
-    const filterStops = async () => {
-      const mapBounds = map.getBounds();
-      setFilteredStops(
-        Object.values(stopsMap).filter((stop) =>
-          mapBounds.contains([stop.lat, stop.lon])
-        )
-      );
-    };
-
-    if (!map) {
-      throw new Error(
-        'StopsRenderer should be only called within Map component.'
-      );
-    }
-    filterStops();
-
-    map.on('dragend', function () {
-      filterStops();
-    });
-
-    map.on('zoomend', function () {
-      filterStops();
-    });
-
-    return () => {
-      map.off('dragend');
-      map.off('zoomend');
-    };
-  }, [map, stopsMap]);
+  }, [mapBounds, mapZoom, latLngBounds, isHidden]);
 
   useEffect(() => {
     console.log('STOPSMAP', stopsMap);
@@ -171,6 +98,10 @@ export default function StopsRenderer() {
   if (isHidden) {
     return null;
   }
+
+  const filteredStops = Object.values(stopsMap).filter((stop) =>
+    mapBounds.contains([stop.lat, stop.lon]),
+  );
 
   const handleSetFromClick = (stop: StopStationData) => {
     dispatch({
