@@ -5,6 +5,7 @@ import { MapBoundsContext } from './MapBoundsContext';
 
 import type { LatLngBounds, LatLngExpression } from 'leaflet';
 import type { FC, ReactNode } from 'react';
+import type { MarkerWithCoordinates } from '../types';
 
 type MapBoundsProviderProps = {
   children: ReactNode;
@@ -40,6 +41,14 @@ const MapBoundsProvider: FC<MapBoundsProviderProps> = ({ children }) => {
     [map],
   );
 
+  const filterMarkers = useCallback(
+    <T extends MarkerWithCoordinates>(markersWithCoordinates: T[]) =>
+      markersWithCoordinates.filter(({ lat, lon }) =>
+        mapBounds.contains([lat, lon]),
+      ),
+    [mapBounds],
+  );
+
   useEffect(() => {
     async function updateBounds() {
       setMapBounds(map.getBounds());
@@ -67,8 +76,9 @@ const MapBoundsProvider: FC<MapBoundsProviderProps> = ({ children }) => {
       value={{
         mapBounds,
         mapZoom,
-        setMapView,
         markerShowState,
+        setMapView,
+        filterMarkers,
       }}
     >
       {children}

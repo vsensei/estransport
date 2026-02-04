@@ -2,6 +2,7 @@ import { decode } from '@googlemaps/polyline-codec';
 import { useEffect } from 'react';
 import { Polyline } from 'react-leaflet';
 import { MapDataActionTypes } from '../../actions';
+import { walkDashArrayDefault } from '../../const';
 import { useMapDataContext } from '../../context/MapDataContext';
 import { getColorByTransitType } from '../../utils';
 import { fetchItineraries } from '../../utils/fetch';
@@ -24,7 +25,7 @@ export default function ItineraryRenderer() {
           to: LatLngTuple;
         },
       );
-      console.log(itineraryData);
+
       dispatch({
         type: MapDataActionTypes.SET_ITINERARIES,
         payload: itineraryData?.data.planConnection.edges,
@@ -38,32 +39,29 @@ export default function ItineraryRenderer() {
 
   return (
     <>
-      {!selectedItinerary &&
-        itineraries.map((itinerary) => {
-          console.log('ITINERARY', itinerary);
-
-          return itinerary?.node.legs.map((leg) => (
+      {selectedItinerary
+        ? selectedItinerary.node.legs.map((leg) => (
             <Polyline
-              key={`${itinerary.node.start}${leg.legGeometry.points}`}
+              key={`${selectedItinerary.node.start}${leg.legGeometry.points}`}
               color={getColorByTransitType(leg.mode)}
-              dashArray={leg.mode === 'WALK' ? '10 15' : undefined}
+              dashArray={leg.mode === 'WALK' ? walkDashArrayDefault : undefined}
               weight={5}
               positions={decode(leg.legGeometry.points)}
             />
-          ));
-        })}
-      {selectedItinerary &&
-        console.log(selectedItinerary.node.start, selectedItinerary.node.end)}
-      {selectedItinerary &&
-        selectedItinerary.node.legs.map((leg) => (
-          <Polyline
-            key={`${selectedItinerary.node.start}${leg.legGeometry.points}`}
-            color={getColorByTransitType(leg.mode)}
-            dashArray={leg.mode === 'WALK' ? '10 15' : undefined}
-            weight={5}
-            positions={decode(leg.legGeometry.points)}
-          />
-        ))}
+          ))
+        : itineraries.map((itinerary) =>
+            itinerary?.node.legs.map((leg) => (
+              <Polyline
+                key={`${itinerary.node.start}${leg.legGeometry.points}`}
+                color={getColorByTransitType(leg.mode)}
+                dashArray={
+                  leg.mode === 'WALK' ? walkDashArrayDefault : undefined
+                }
+                weight={5}
+                positions={decode(leg.legGeometry.points)}
+              />
+            )),
+          )}
     </>
   );
 }
