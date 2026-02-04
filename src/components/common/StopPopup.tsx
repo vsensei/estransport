@@ -41,7 +41,7 @@ export default function StopPopup({
         <button onClick={() => handleSetFromClick(stop)}>Set From</button>
         <button onClick={() => handleSetToClick(stop)}>Set To</button>
       </div>
-      <button onClick={() => handleShowDepartures(gtfsId)}>
+      <button onClick={() => void handleShowDepartures(gtfsId)}>
         Show Departures
       </button>
       <ul>

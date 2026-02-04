@@ -17,7 +17,7 @@ const sortLocations = (unsortedLocations: Location[]) => {
 
 const calculateItineraryDistance = (itinerary: Itinerary) => {
   const distanceSum = itinerary.node.legs.reduce(
-    (acc, leg) => (acc = acc + leg.distance),
+    (acc, leg) => acc + leg.distance,
     0,
   );
 
@@ -68,7 +68,7 @@ export default function Header() {
           value={locationSearchQuery}
           onChange={handleLocationSearchQueryChange}
         />
-        <button onClick={getLocationsByQuery}>Load</button>
+        <button onClick={() => void getLocationsByQuery()}>Load</button>
       </div>
       <div className={styles.listsContainer}>
         <ul className={styles.choosableList}>
@@ -108,7 +108,7 @@ export default function Header() {
         <ul className={styles.choosableList}>
           {state.itineraries.map((itinerary) => (
             <li
-              key={`${itinerary.node.start}${itinerary.node.legs.toString()}`}
+              key={`${itinerary.node.start}${itinerary.node.end}`}
               aria-selected={false}
               onClick={() => handleSelectItineraryClick(itinerary)}
               style={{ backgroundColor: '' }}
@@ -119,10 +119,7 @@ export default function Header() {
                 getDepartureTimeByDateTime(new Date(itinerary.node.start)),
               )}
               <br />
-              {itinerary.node.legs.reduce(
-                (acc, leg) => (acc = acc + leg.duration),
-                0,
-              )}
+              {itinerary.node.legs.reduce((acc, leg) => acc + leg.duration, 0)}
               <br />
               {calculateItineraryDistance(itinerary)}
             </li>

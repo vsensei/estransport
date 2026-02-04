@@ -30,10 +30,6 @@ export default function LocationsRenderer() {
     }
   }, [selectedLocation, setMapView]);
 
-  if (!locations) {
-    return null;
-  }
-
   const handleSetFromClick = (location: Location) => {
     dispatch({
       type: MapDataActionTypes.SET_ITINERARY_FROM,
@@ -103,7 +99,7 @@ export default function LocationsRenderer() {
               </div>
               {isStop && (
                 <>
-                  <button onClick={() => handleShowDepartures(stopId)}>
+                  <button onClick={() => void handleShowDepartures(stopId)}>
                     Show Departures
                   </button>
                   <ul>
