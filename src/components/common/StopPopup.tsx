@@ -22,9 +22,7 @@ export default function StopPopup({
     setStopTimes(fetchedStopTimes);
   };
 
-  const { name, id, gtfsId, vehicleMode, locationType, code, lat, lon } = stop;
-  //const rawStopId = id.split(/[:#]/);
-  //const stopId = `${rawStopId[1]}:${rawStopId[2]}`;
+  const { name, gtfsId, vehicleMode, locationType, code, lat, lon } = stop;
 
   return (
     <Popup>
@@ -44,7 +42,9 @@ export default function StopPopup({
         <button onClick={() => handleSetFromClick(stop)}>Set From</button>
         <button onClick={() => handleSetToClick(stop)}>Set To</button>
       </div>
-      <button onClick={() => handleShowDepartures(id)}>Show Departures</button>
+      <button onClick={() => handleShowDepartures(gtfsId)}>
+        Show Departures
+      </button>
       <ul>
         {[...stopTimes]
           .sort((a, b) => b.departureDelay - a.departureDelay)
