@@ -80,10 +80,4 @@ export const fetchItineraries = async ({
 
 export const processTransportLocationsTest = (
   transportLocationsDataJSON: string,
-) => {
-  const data = JSON.parse(transportLocationsDataJSON) as LiveVehicleInfo[];
-
-  console.log('DATA', data);
-
-  return data;
-};
+) => JSON.parse(transportLocationsDataJSON) as LiveVehicleInfo[];

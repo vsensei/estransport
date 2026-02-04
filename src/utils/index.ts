@@ -1,15 +1,15 @@
-import { colorMap } from '../const';
+import { colorMap, realtimeColorMap } from '../const';
 
 import type { CSSProperties } from 'react';
-import type { TransitType } from '../types';
+import type { TransitType, TransportType } from '../types';
 import type { Location, Station, Stop } from '../types/data';
 
 export const getDepartureTime = (
   departureDateUnix: number,
-  departureSecondsSinceMidnight: number
+  departureSecondsSinceMidnight: number,
 ): number => {
   const departureMoment = new Date(
-    (departureDateUnix + departureSecondsSinceMidnight) * 1000
+    (departureDateUnix + departureSecondsSinceMidnight) * 1000,
   );
   const intervalMs = departureMoment.getTime() - new Date().getTime();
   return Math.floor(intervalMs / 60000);
@@ -44,7 +44,7 @@ const transitTypeIsValid = (transitType: string): transitType is TransitType =>
   transitType in colorMap;
 
 export const getColorByTransitType = (
-  transitType: string | null
+  transitType: string | null,
 ): CSSProperties['color'] =>
   transitType && transitTypeIsValid(transitType)
     ? colorMap[transitType]
@@ -53,6 +53,10 @@ export const getColorByTransitType = (
 // TODO: Remove after popup data unification
 export const getColor = (location: Location): CSSProperties['color'] => {
   return getColorByTransitType(
-    (isStopType(location) && location.properties.addendum.GTFS.modes[0]) || null
+    (isStopType(location) && location.properties.addendum.GTFS.modes[0]) ||
+      null,
   );
 };
+
+export const getRealtimeMarkerColor = (type: TransportType) =>
+  realtimeColorMap[type];
