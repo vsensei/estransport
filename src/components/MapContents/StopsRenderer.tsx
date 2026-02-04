@@ -43,7 +43,8 @@ const isInLatLngBoundsArray = (
 export default function StopsRenderer() {
   const [stopsMap, setStopsMap] = useState<StopsMap>({});
   const [latLngBounds, setLatLngBounds] = useState<LatLngBounds[]>([]);
-  const { mapBounds, mapZoom, markerShowState } = useMapBoundsContext();
+  const { mapBounds, mapZoom, markerShowState, filterMarkers } =
+    useMapBoundsContext();
   const { dispatch } = useMapDataContext();
 
   const isHidden = markerShowState === MarkerShowState.HIDDEN;
@@ -99,9 +100,7 @@ export default function StopsRenderer() {
     return null;
   }
 
-  const filteredStops = Object.values(stopsMap).filter((stop) =>
-    mapBounds.contains([stop.lat, stop.lon]),
-  );
+  const filteredStops = filterMarkers(Object.values(stopsMap));
 
   const handleSetFromClick = (stop: StopStationData) => {
     dispatch({
