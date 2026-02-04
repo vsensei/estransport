@@ -18,7 +18,6 @@ export default function StopPopup({
 
   const handleShowDepartures = async (stopId: string) => {
     const fetchedStopTimes = await fetchStopDepartures(stopId);
-    console.log(fetchedStopTimes);
     setStopTimes(fetchedStopTimes);
   };
 

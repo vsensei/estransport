@@ -25,7 +25,7 @@ export default function ItineraryRenderer() {
           to: LatLngTuple;
         },
       );
-      console.log(itineraryData);
+
       dispatch({
         type: MapDataActionTypes.SET_ITINERARIES,
         payload: itineraryData?.data.planConnection.edges,

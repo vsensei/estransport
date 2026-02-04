@@ -43,7 +43,6 @@ export default function Header() {
 
   const getLocationsByQuery = async () => {
     const locations = await fetchLocationsByQueryName(locationSearchQuery);
-    console.log('LOC', locations);
     dispatch({ type: MapDataActionTypes.SET_LOCATIONS, payload: locations });
   };
 

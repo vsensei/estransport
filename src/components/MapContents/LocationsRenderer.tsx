@@ -50,7 +50,6 @@ export default function LocationsRenderer() {
 
   const handleShowDepartures = async (stopId: string) => {
     const fetchedStopTimes = await fetchStopDepartures(stopId);
-    console.log(fetchedStopTimes);
     setStopTimes(fetchedStopTimes);
   };
 

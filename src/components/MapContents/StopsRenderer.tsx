@@ -35,10 +35,8 @@ export default function StopsRenderer() {
         mapZoom < 13 ||
         (latLngBounds.length && isInLatLngBoundsArray(mapBounds, latLngBounds))
       ) {
-        console.log('latlng NOT PROCEEDED');
         return;
       }
-      console.log('latlng PROCEEDED');
 
       const { lat: minLat, lng: minLon } = mapBounds.getSouthWest();
       const { lat: maxLat, lng: maxLon } = mapBounds.getNorthEast();
@@ -67,14 +65,6 @@ export default function StopsRenderer() {
     }
   }, [mapBounds, mapZoom, latLngBounds, isHidden]);
 
-  useEffect(() => {
-    console.log('STOPSMAP', stopsMap);
-  }, [stopsMap]);
-
-  useEffect(() => {
-    console.log('LATLNGARRAY', latLngBounds);
-  }, [latLngBounds]);
-
   if (isHidden) {
     return null;
   }
@@ -97,7 +87,6 @@ export default function StopsRenderer() {
 
   return (
     <>
-      {console.log('FILTEREDSTOPS', filteredStops.length)}
       {filteredStops.map((stop) => {
         const markerColor = getColorByTransitType(stop.vehicleMode);
         const isStation = stop.locationType === 'STATION';
