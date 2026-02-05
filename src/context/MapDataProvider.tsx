@@ -1,11 +1,7 @@
 import { useReducer } from 'react';
 import { MapDataContext, reducer } from './MapDataContext';
 
-import type { FC, ReactNode } from 'react';
-
-type MapDataProviderProps = {
-  children: ReactNode;
-};
+import type { PropsWithChildren } from 'react';
 
 const initialState = {
   locations: [],
@@ -18,7 +14,7 @@ const initialState = {
   selectedLocation: null,
 };
 
-const MapDataProvider: FC<MapDataProviderProps> = ({ children }) => {
+export default function MapDataProvider({ children }: PropsWithChildren) {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   return (
@@ -26,6 +22,4 @@ const MapDataProvider: FC<MapDataProviderProps> = ({ children }) => {
       {children}
     </MapDataContext.Provider>
   );
-};
-
-export default MapDataProvider;
+}
