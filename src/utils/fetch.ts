@@ -1,4 +1,4 @@
-import { serverBaseUrl } from '../const/envVariables';
+import { serverBaseUrl } from '../const/env';
 
 import type { LatLngTuple } from 'leaflet';
 import type {
@@ -20,18 +20,19 @@ const fetchDataUnsafe = async (
   }
 
   const response = await fetch(url);
-  return response.json();
+  return response.json() as unknown;
 };
 
-export const fetchLocationsByQueryName = (
-  locationQuery: string,
-): Promise<Location[]> => {
-  return fetchDataUnsafe(`autocomplete/${locationQuery}`);
+export const fetchLocationsByQueryName = (locationQuery: string) => {
+  return fetchDataUnsafe(`autocomplete/${locationQuery}`) as Promise<
+    Location[]
+  >;
 };
 
 export const fetchStopDepartures = async (stopId: string) => {
-  const itineraryData: { data: { stop: StopInfoResponse } } =
-    await fetchDataUnsafe(`stopInfo/${stopId}`);
+  const itineraryData = (await fetchDataUnsafe(`stopInfo/${stopId}`)) as {
+    data: { stop: StopInfoResponse };
+  };
   return itineraryData.data.stop.stoptimesWithoutPatterns;
 };
 
@@ -45,7 +46,7 @@ export const fetchPartialStops = ({
   minLon: number;
   maxLat: number;
   maxLon: number;
-}): Promise<StopStationData[]> => {
+}) => {
   return fetchDataUnsafe(
     'stops',
     new URLSearchParams({
@@ -54,7 +55,7 @@ export const fetchPartialStops = ({
       maxLat: maxLat.toString(),
       maxLon: maxLon.toString(),
     }),
-  );
+  ) as Promise<StopStationData[]>;
 };
 
 export const fetchItineraries = async ({
@@ -63,7 +64,7 @@ export const fetchItineraries = async ({
 }: {
   from: LatLngTuple;
   to: LatLngTuple;
-}): Promise<ItineraryResponseData> => {
+}) => {
   const [startLat, startLon] = from;
   const [finishLat, finishLon] = to;
 
@@ -75,7 +76,7 @@ export const fetchItineraries = async ({
       finishLat: finishLat.toString(),
       finishLon: finishLon.toString(),
     }),
-  );
+  ) as Promise<ItineraryResponseData>;
 };
 
 export const processTransportLocationsTest = (

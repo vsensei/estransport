@@ -28,12 +28,12 @@ export default function ItineraryRenderer() {
 
       dispatch({
         type: MapDataActionTypes.SET_ITINERARIES,
-        payload: itineraryData?.data.planConnection.edges,
+        payload: itineraryData.data.planConnection.edges,
       });
     };
 
     if (itineraryCoordinates.from && itineraryCoordinates.to) {
-      getItineraries();
+      void getItineraries();
     }
   }, [itineraryCoordinates, dispatch]);
 
@@ -50,7 +50,7 @@ export default function ItineraryRenderer() {
             />
           ))
         : itineraries.map((itinerary) =>
-            itinerary?.node.legs.map((leg) => (
+            itinerary.node.legs.map((leg) => (
               <Polyline
                 key={`${itinerary.node.start}${leg.legGeometry.points}`}
                 color={getColorByTransitType(leg.mode)}

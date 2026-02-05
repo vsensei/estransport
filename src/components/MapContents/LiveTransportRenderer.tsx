@@ -1,13 +1,14 @@
 import 'leaflet/dist/leaflet.css';
 import { useEffect, useState } from 'react';
 import { CircleMarker, Marker, Popup, Tooltip } from 'react-leaflet';
-import { serverBaseUrl } from '../../const/envVariables';
+import { serverBaseUrl } from '../../const/env';
 import { useMapBoundsContext } from '../../context/MapBoundsContext';
 import { liveTransportQueryMock } from '../../mocks/liveTransportQueryMock';
-import { LiveVehicleInfo } from '../../types/data';
 import { getRealtimeMarkerColor } from '../../utils';
 import { getTransportIcon } from '../../utils/dynamicSvg';
 import { processTransportLocationsTest } from '../../utils/fetch';
+
+import type { LiveVehicleInfo } from '../../types/data';
 
 import styles from './LiveTransportRenderer.module.css';
 
@@ -23,7 +24,7 @@ export default function LiveTransportRenderer() {
       `${serverBaseUrl}/liveData/route/${liveTransportLineMock}`,
     );
 
-    eventSource.onmessage = (event) => {
+    eventSource.onmessage = (event: MessageEvent<string>) => {
       setTransportMarkers(processTransportLocationsTest(event.data));
     };
 

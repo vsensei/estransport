@@ -23,13 +23,6 @@ const getMarkerShowState = (mapZoom: number) => {
 
 const MapBoundsProvider: FC<MapBoundsProviderProps> = ({ children }) => {
   const map = useMap();
-
-  if (!map) {
-    throw new Error(
-      'MapBoundsProvider must be placed inside the Map component.',
-    );
-  }
-
   const [mapBounds, setMapBounds] = useState<LatLngBounds>(map.getBounds());
   const [mapZoom, setMapZoom] = useState<number>(map.getZoom());
   const markerShowState = getMarkerShowState(mapZoom);
@@ -50,7 +43,7 @@ const MapBoundsProvider: FC<MapBoundsProviderProps> = ({ children }) => {
   );
 
   useEffect(() => {
-    async function updateBounds() {
+    function updateBounds() {
       setMapBounds(map.getBounds());
       setMapZoom(map.getZoom());
     }

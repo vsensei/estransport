@@ -61,6 +61,12 @@ export type Station = Feature & {
     layer: 'station';
     housenumber: string;
     street: string;
+    addendum?: {
+      GTFS: {
+        modes: Array<'BUS' | 'TRAM' | 'RAIL'>;
+        code: string;
+      };
+    };
   };
 };
 
@@ -185,7 +191,7 @@ export type StopStationData = {
     vehicleMode: string;
   } | null;
   platformCode: string | null;
-  vehicleMode: string | null;
+  vehicleMode: string;
   stops: null;
 };
 
