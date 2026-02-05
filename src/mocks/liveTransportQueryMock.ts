@@ -1,4 +1,4 @@
-import { TransportType } from '../types';
+import type { TransportType } from '../types';
 
 export const liveTransportQueryMock: {
   type: TransportType;

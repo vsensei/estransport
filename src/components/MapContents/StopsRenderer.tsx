@@ -1,4 +1,3 @@
-import { LatLngBounds } from 'leaflet';
 import { useEffect, useState } from 'react';
 import { CircleMarker, Marker } from 'react-leaflet';
 import { MapDataActionTypes } from '../../actions';
@@ -10,6 +9,7 @@ import { getStopIcon } from '../../utils/dynamicSvg';
 import { fetchPartialStops } from '../../utils/fetch';
 import StopPopup from '../common/StopPopup';
 
+import type { LatLngBounds } from 'leaflet';
 import type { StopStationData } from '../../types/data';
 
 type StopsMap = Record<StopStationData['gtfsId'], StopStationData>;
