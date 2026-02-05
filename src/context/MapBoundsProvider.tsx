@@ -4,12 +4,8 @@ import { MarkerShowState } from '../const/enum';
 import { MapBoundsContext } from './MapBoundsContext';
 
 import type { LatLngBounds, LatLngExpression } from 'leaflet';
-import type { FC, ReactNode } from 'react';
+import type { PropsWithChildren } from 'react';
 import type { MarkerWithCoordinates } from '../types';
-
-type MapBoundsProviderProps = {
-  children: ReactNode;
-};
 
 const getMarkerShowState = (mapZoom: number) => {
   if (mapZoom > 16) {
@@ -21,7 +17,7 @@ const getMarkerShowState = (mapZoom: number) => {
     : MarkerShowState.HIDDEN;
 };
 
-const MapBoundsProvider: FC<MapBoundsProviderProps> = ({ children }) => {
+export default function MapBoundsProvider({ children }: PropsWithChildren) {
   const map = useMap();
   const [mapBounds, setMapBounds] = useState<LatLngBounds>(map.getBounds());
   const [mapZoom, setMapZoom] = useState<number>(map.getZoom());
@@ -77,6 +73,4 @@ const MapBoundsProvider: FC<MapBoundsProviderProps> = ({ children }) => {
       {children}
     </MapBoundsContext.Provider>
   );
-};
-
-export default MapBoundsProvider;
+}
