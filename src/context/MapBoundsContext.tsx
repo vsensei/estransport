@@ -1,8 +1,8 @@
 import { createContext, useContext } from 'react';
 
+import type { MarkerShowState } from 'const/enum';
 import type { LatLngBounds, LatLngExpression } from 'leaflet';
-import type { MarkerShowState } from '../const/enum';
-import type { MarkerWithCoordinates } from '../types';
+import type { MarkerWithCoordinates } from 'types';
 
 export type MapBoundsContextType = {
   mapBounds: LatLngBounds;

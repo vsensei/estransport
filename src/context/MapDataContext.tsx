@@ -1,10 +1,10 @@
+import { MapDataActionTypes } from 'actions';
 import { createContext, useContext } from 'react';
-import { MapDataActionTypes } from '../actions';
 
+import type { NewMapDataActions } from 'actions';
 import type { LatLngTuple } from 'leaflet';
 import type { Dispatch } from 'react';
-import type { NewMapDataActions } from '../actions';
-import type { Itinerary, Location } from '../types/data';
+import type { Itinerary, Location } from 'types/data';
 
 type State = {
   locations: Location[];

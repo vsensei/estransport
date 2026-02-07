@@ -1,11 +1,11 @@
+import { MarkerShowState } from 'const/enum';
 import { useCallback, useEffect, useState } from 'react';
 import { useMap } from 'react-leaflet';
-import { MarkerShowState } from '../const/enum';
 import { MapBoundsContext } from './MapBoundsContext';
 
 import type { LatLngBounds, LatLngExpression } from 'leaflet';
 import type { PropsWithChildren } from 'react';
-import type { MarkerWithCoordinates } from '../types';
+import type { MarkerWithCoordinates } from 'types';
 
 const getMarkerShowState = (mapZoom: number) => {
   if (mapZoom > 16) {

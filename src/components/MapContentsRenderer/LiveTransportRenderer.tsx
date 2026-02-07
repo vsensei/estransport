@@ -1,14 +1,14 @@
+import { serverBaseUrl } from 'const/env';
+import { useMapBoundsContext } from 'context/MapBoundsContext';
 import 'leaflet/dist/leaflet.css';
+import { liveTransportQueryMock } from 'mocks/liveTransportQueryMock';
 import { useEffect, useState } from 'react';
 import { CircleMarker, Marker, Popup, Tooltip } from 'react-leaflet';
-import { serverBaseUrl } from '../../const/env';
-import { useMapBoundsContext } from '../../context/MapBoundsContext';
-import { liveTransportQueryMock } from '../../mocks/liveTransportQueryMock';
-import { getRealtimeMarkerColor } from '../../utils';
-import { getTransportIcon } from '../../utils/dynamicSvg';
-import { processTransportLocationsTest } from '../../utils/fetch';
+import { getRealtimeMarkerColor } from 'utils';
+import { getTransportIcon } from 'utils/dynamicSvg';
+import { processTransportLocationsTest } from 'utils/fetch';
 
-import type { LiveVehicleInfo } from '../../types/data';
+import type { LiveVehicleInfo } from 'types/data';
 
 import styles from './LiveTransportRenderer.module.css';
 

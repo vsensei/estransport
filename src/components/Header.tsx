@@ -1,13 +1,13 @@
+import { MapDataActionTypes } from 'actions';
+import { useMapDataContext } from 'context/MapDataContext';
 import { useState } from 'react';
-import { MapDataActionTypes } from '../../actions';
-import { useMapDataContext } from '../../context/MapDataContext';
-import { formatDepartureTime, getDepartureTimeByDateTime } from '../../utils';
-import { fetchLocationsByQueryName } from '../../utils/fetch';
+import { formatDepartureTime, getDepartureTimeByDateTime } from 'utils';
+import { fetchLocationsByQueryName } from 'utils/fetch';
 
 import styles from './Header.module.css';
 
 import type { ChangeEvent } from 'react';
-import type { Itinerary, Location } from '../../types/data';
+import type { Itinerary, Location } from 'types/data';
 
 const sortLocations = (unsortedLocations: Location[]) => {
   return [...unsortedLocations].sort(

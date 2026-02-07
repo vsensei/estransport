@@ -1,8 +1,8 @@
-import { colorMap, realtimeColorMap } from '../const';
+import { colorMap, realtimeColorMap } from 'const';
 
 import type { CSSProperties } from 'react';
-import type { TransitType, TransportType } from '../types';
-import type { Location, Station, Stop } from '../types/data';
+import type { TransitType, TransportType } from 'types';
+import type { Location, Station, Stop } from 'types/data';
 
 export const getDepartureTime = (
   departureDateUnix: number,

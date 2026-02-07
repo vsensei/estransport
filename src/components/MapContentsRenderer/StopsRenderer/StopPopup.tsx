@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Popup } from 'react-leaflet';
-import { getColorByTransitType, getDepartureTime } from '../../utils';
-import { fetchStopDepartures } from '../../utils/fetch';
+import { getColorByTransitType, getDepartureTime } from 'utils';
+import { fetchStopDepartures } from 'utils/fetch';
 
-import type { StopStationData, StopTime } from '../../types/data';
+import type { StopStationData, StopTime } from 'types/data';
 
 export default function StopPopup({
   stop,
