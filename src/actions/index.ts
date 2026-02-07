@@ -1,5 +1,5 @@
 import type { LatLngTuple } from 'leaflet';
-import type { Itinerary, Location } from '../types/data';
+import type { Itinerary, Location } from 'types/data';
 
 export const enum MapDataActionTypes {
   SET_LOCATIONS = 'SET_LOCATIONS',

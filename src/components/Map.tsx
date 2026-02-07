@@ -1,5 +1,5 @@
+import { digitransitAPIKey } from 'const/env';
 import { MapContainer, TileLayer } from 'react-leaflet';
-import { digitransitAPIKey } from '../const/env';
 import MapContentsRenderer from './MapContentsRenderer';
 
 import 'leaflet/dist/leaflet.css';

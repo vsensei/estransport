@@ -1,4 +1,4 @@
-import { serverBaseUrl } from '../const/env';
+import { serverBaseUrl } from 'const/env';
 
 import type { LatLngTuple } from 'leaflet';
 import type {
@@ -7,7 +7,7 @@ import type {
   Location,
   StopInfoResponse,
   StopStationData,
-} from '../types/data';
+} from 'types/data';
 
 const fetchDataUnsafe = async (
   endpoint: string,

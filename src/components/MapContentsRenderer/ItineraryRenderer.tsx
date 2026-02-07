@@ -1,14 +1,14 @@
 import { decode } from '@googlemaps/polyline-codec';
+import { MapDataActionTypes } from 'actions';
+import { walkDashArrayDefault } from 'const';
+import { useMapDataContext } from 'context/MapDataContext';
 import { useEffect } from 'react';
 import { Polyline } from 'react-leaflet';
-import { MapDataActionTypes } from '../../actions';
-import { walkDashArrayDefault } from '../../const';
-import { useMapDataContext } from '../../context/MapDataContext';
-import { getColorByTransitType } from '../../utils';
-import { fetchItineraries } from '../../utils/fetch';
+import { getColorByTransitType } from 'utils';
+import { fetchItineraries } from 'utils/fetch';
 
 import type { LatLngTuple } from 'leaflet';
-import type { ItineraryResponseData } from '../../types/data';
+import type { ItineraryResponseData } from 'types/data';
 
 export default function ItineraryRenderer() {
   const {

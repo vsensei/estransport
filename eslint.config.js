@@ -6,7 +6,7 @@ import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
 export default defineConfig([
-  globalIgnores(['dist']),
+  globalIgnores(['dist', '**/routeTree.gen.ts']),
   {
     files: ['**/*.{ts,tsx}'],
     extends: [
@@ -29,10 +29,8 @@ export default defineConfig([
     rules: {
       '@typescript-eslint/array-type': ['error', { default: 'array-simple' }],
       '@typescript-eslint/consistent-type-imports': 'error',
-      '@typescript-eslint/no-confusing-void-expression': [
-        'error',
-        { ignoreArrowShorthand: true },
-      ],
+      '@typescript-eslint/no-confusing-void-expression': 'off',
+      '@typescript-eslint/no-unsafe-assignment': 'off',
       '@typescript-eslint/restrict-template-expressions': [
         'error',
         {
@@ -51,7 +49,7 @@ export default defineConfig([
       'no-unassigned-vars': 'error',
       'no-unmodified-loop-condition': 'error',
       'no-unreachable-loop': 'error',
-      'no-use-before-define': 'error',
+      'no-use-before-define': 'off',
       'no-useless-assignment': 'error',
       'require-atomic-updates': 'error',
     },

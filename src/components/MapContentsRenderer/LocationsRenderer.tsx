@@ -1,19 +1,19 @@
+import { MapDataActionTypes } from 'actions';
+import { useMapBoundsContext } from 'context/MapBoundsContext';
+import { useMapDataContext } from 'context/MapDataContext';
 import { useEffect, useState } from 'react';
 import { Marker, Popup } from 'react-leaflet';
-import { MapDataActionTypes } from '../../actions';
-import { useMapBoundsContext } from '../../context/MapBoundsContext';
-import { useMapDataContext } from '../../context/MapDataContext';
 import {
   getColor,
   getColorByTransitType,
   getDepartureTime,
   isStationType,
   isStopType,
-} from '../../utils';
-import { fetchStopDepartures } from '../../utils/fetch';
+} from 'utils';
+import { fetchStopDepartures } from 'utils/fetch';
 
 import type { LatLngTuple } from 'leaflet';
-import type { Location, StopTime } from '../../types/data';
+import type { Location, StopTime } from 'types/data';
 
 export default function LocationsRenderer() {
   const [stopTimes, setStopTimes] = useState<StopTime[]>([]);

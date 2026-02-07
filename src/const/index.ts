@@ -1,4 +1,4 @@
-import type { TransitType, TransportType } from '../types';
+import type { TransitType, TransportType } from 'types';
 
 export const colorMap = {
   WALK: '#6e6e6e',

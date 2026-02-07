@@ -1,16 +1,16 @@
+import { MapDataActionTypes } from 'actions';
+import { MarkerShowState } from 'const/enum';
+import { useMapBoundsContext } from 'context/MapBoundsContext';
+import { useMapDataContext } from 'context/MapDataContext';
 import { useEffect, useState } from 'react';
 import { CircleMarker, Marker } from 'react-leaflet';
-import { MapDataActionTypes } from '../../actions';
-import { MarkerShowState } from '../../const/enum';
-import { useMapBoundsContext } from '../../context/MapBoundsContext';
-import { useMapDataContext } from '../../context/MapDataContext';
-import { getColorByTransitType } from '../../utils';
-import { getStopIcon } from '../../utils/dynamicSvg';
-import { fetchPartialStops } from '../../utils/fetch';
-import StopPopup from '../common/StopPopup';
+import { getColorByTransitType } from 'utils';
+import { getStopIcon } from 'utils/dynamicSvg';
+import { fetchPartialStops } from 'utils/fetch';
+import StopPopup from './StopsRenderer/StopPopup';
 
 import type { LatLngBounds } from 'leaflet';
-import type { StopStationData } from '../../types/data';
+import type { StopStationData } from 'types/data';
 
 type StopsMap = Record<StopStationData['gtfsId'], StopStationData>;
 
